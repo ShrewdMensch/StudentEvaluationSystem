@@ -1,0 +1,68 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+    <div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('/images/blog_1.jpg');">
+        <div class="container">
+            <div class="row align-items-end">
+                <div class="col-lg-7">
+                    <h2 class="mb-0">Login</h2>
+                    <p>Existing User Area.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="user-page">
+        <div class="container mt-5">
+            <div class="d-flex justify-content-center p-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Sign In</h3>
+                        <div class="d-flex justify-content-end social_icon">
+                            <span><i class="icon-users"></i></span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" id="account">
+                            <div asp-validation-summary="All"></div>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="icon-user"></i></span>
+                                </div>
+                                <input asp-for="Input.Email" class="form-control" placeholder="Email" />
+                            </div>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="icon-key"></i></span>
+                                </div>
+                                <input asp-for="Input.Password" class="form-control" placeholder="Password" />                            
+                            </div>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            <div class="row align-items-center remember">
+                                <input asp-for="Input.RememberMe" />Remember Me
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Login" class="btn float-right login_btn">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-center links">
+                            Don't have an account?<a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <a id="register-new" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<br />
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

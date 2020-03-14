@@ -1,0 +1,307 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+header.site-navbar.py-4.js-sticky-header.site-navbar-target {
+    background-color: #fff;
+}
+
+div.border.p-4 {
+    border-radius: 10px;
+    box-shadow: 10px 10px #ccc;
+    width: 80%;
+    margin-left: 10%
+}
+
+.validation-summary-errors li{
+    color: #faa;
+}
+/* Sticky footer styles
+-------------------------------------------------- */
+@media (min-width: 768px) {
+    html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Table styles
+-------------------------------------------------- */
+thead {
+    color: #fff;
+    background-color: #6ac78b !important;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+  /* Margin bottom by footer height */
+
+
+
+.social-wrap {
+    display:none;
+}
+
+@media only screen and (max-width: 800px) {
+    nav.site-navigation.position-relative.text-right {
+        display: none;
+    }
+
+    .social-wrap {
+        display: block;
+    }
+}
+
+form {
+margin-bottom:10%;
+}
+
+div.body-container{
+    margin-bottom:20%;
+}
+
+.icon-wrapper, a.btn.btn-primary.px-4.rounded-0, button, a.btn.btn-primary, .page-item.active .page-link {
+    background-color: #007b5e !important;
+    border-color: transparent !important;
+}
+
+a.small.mr-3{
+    color: #007b5e !important;
+}
+a#forgot-password,a#register-new {
+    color: #76cc95 !important;
+}
+/*Footer Area*/
+
+section {
+    padding: 60px 0;
+}
+
+    section .section-title {
+        text-align: center;
+        color: #007b5e;
+        margin-bottom: 50px;
+        text-transform: uppercase;
+    }
+
+#footer {
+    background: #007b5e !important;
+}
+
+    #footer h5 {
+        padding-left: 10px;
+        border-left: 3px solid #eeeeee;
+        padding-bottom: 6px;
+        margin-bottom: 20px;
+        color: #ffffff;
+    }
+
+    #footer a {
+        color: #ffffff;
+        text-decoration: none !important;
+        background-color: transparent;
+        -webkit-text-decoration-skip: objects;
+    }
+
+    #footer ul.social li {
+        padding: 3px 0;
+    }
+
+        #footer ul.social li a i {
+            margin-right: 5px;
+            font-size: 25px;
+            -webkit-transition: .5s all ease;
+            -moz-transition: .5s all ease;
+            transition: .5s all ease;
+        }
+
+        #footer ul.social li:hover a i {
+            font-size: 30px;
+            margin-top: -10px;
+        }
+
+        #footer ul.social li a,
+        #footer ul.quick-links li a {
+            color: #ffffff;
+        }
+
+            #footer ul.social li a:hover {
+                color: #eeeeee;
+            }
+
+    #footer ul.quick-links li {
+        padding: 3px 0;
+        -webkit-transition: .5s all ease;
+        -moz-transition: .5s all ease;
+        transition: .5s all ease;
+    }
+
+        #footer ul.quick-links li:hover {
+            padding: 3px 0;
+            margin-left: 5px;
+            font-weight: 700;
+        }
+
+        #footer ul.quick-links li a i {
+            margin-right: 5px;
+        }
+
+        #footer ul.quick-links li:hover a i {
+            font-weight: 700;
+        }
+
+@media (max-width:767px) {
+    #footer h5 {
+        padding-left: 0;
+        border-left: transparent;
+        padding-bottom: 0px;
+        margin-bottom: 10px;
+    }
+}
+
+
+/**Login/Register Form*/
+.container{
+height: 100%;
+align-content: center;
+}
+
+.card{
+height: 100%;
+margin-top: auto;
+margin-bottom: auto;
+width: 400px;
+background-color: #888 !important;
+}
+
+.social_icon span{
+font-size: 60px;
+margin-left: 10px;
+color: #76cc95;
+}
+
+.social_icon span:hover{
+color: white;
+cursor: pointer;
+}
+
+.card-header h3{
+color: white;
+}
+
+.social_icon{
+position: absolute;
+right: 20px;
+top: -45px;
+}
+
+.input-group-prepend span{
+width: 50px;
+background-color: #76cc95;
+color: black;
+border:0 !important;
+}
+
+input:focus{
+outline: 0 0 0 0  !important;
+box-shadow: 0 0 0 0 !important;
+
+}
+
+.remember{
+color: white;
+}
+
+.remember input
+{
+width: 20px;
+height: 20px;
+margin-left: 15px;
+margin-right: 5px;
+}
+
+.login_btn{
+color: black;
+background-color: #76cc95;
+width: 100px;
+}
+
+.login_btn:hover{
+color: black;
+background-color: white;
+}
+
+.links{
+color: white;
+}
+
+.links a{
+margin-left: 4px;
+}
+
+/* Tabs*/
+section {
+    padding: 60px 0;
+}
+
+    section .section-title {
+        text-align: center;
+        color: #007b5e;
+        margin-bottom: 50px;
+        text-transform: uppercase;
+    }
+
+#tabs {
+    background: #fff;
+    color: #000;
+}
+
+    #tabs h6.section-title {
+        color: #000;
+    }
+
+    #tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+        color: #007b5e;
+        background-color: #007b5e;
+        border-color: #007b5e transparent #007b5e;
+        border-bottom: 2px solid !important;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    #tabs .nav-tabs .nav-link {
+        border: 1px solid transparent;
+        border-top-left-radius: .25rem;
+        border-top-right-radius: .25rem;
+        color: #888;
+        font-size: 20px;
+    }
+
+.nav.nav-tabs.nav-fill .nav-item.nav-link.active{
+    color:#fff!important;
+}

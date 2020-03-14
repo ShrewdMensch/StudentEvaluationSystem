@@ -1,0 +1,77 @@
+﻿@using StudentEvaluationSystem.Utility
+@model List<SessionTerm>
+
+@{
+    ViewData["Title"] = "Index";
+    ViewData["Heading"] = "Terms";
+}
+
+<div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('/images/bg_1.jpg');">
+    <div class="container">
+        <div class="row align-items-end">
+            <div class="col-lg-7">
+                <h2 class="mb-0">Terms</h2>
+                <p>Per Academic Sessions.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-6"></div>
+            <div class="col-6 text-right"><a class="btn btn-primary" asp-action="SetCurrentSessionTerm"><i class="icon-add_box"></i>&nbsp;New Session/Term</a></div>
+        </div>
+        <br />
+        <table class="table table-sm table-striped">
+            <thead class="" style="background-color:#28a745;color:#fff;">
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.FirstOrDefault().TermId)</th>
+                    <th>@Html.DisplayNameFor(m => m.FirstOrDefault().SessionId)</th>
+                    <th>@Html.DisplayNameFor(m => m.FirstOrDefault().IsCurrent)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Term.Name</td>
+                        <td>@item.Session.Name</td>
+                        <td>
+                            @{if (item.IsCurrent)
+                                {
+                                    <i class="icon-check btn-success"></i>
+                                }
+                            }
+                        </td>
+                        <td>
+                            <div class="btn-group" style="float:right;">
+                                <a class="btn btn-success" asp-action="EditTerm" asp-route-id="@item.Id" style="font-size:20px;"><i class="icon-more" style="font-size:20px;"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+    $(document).ready(function () {
+        $(".table").DataTable();
+
+        var info = "@TempData["SessionTermSaved"]?.ToString()";
+
+        if (info == "@Constant.Saved" || info == "@Constant.Updated") {
+            toastr.success("Term " + info + " Successfully");
+        }
+
+    });
+    </script>
+}

@@ -1,0 +1,125 @@
+﻿@using StudentEvaluationSystem.Utility
+@model List<Result>
+
+@{
+    ViewData["Title"] = "Index";
+    ViewData["Heading"] = "Classes";
+}
+
+<div class="site-section ftco-subscribe-1 site-blocks-cover pb-4 d-print-none" style="background-image: url('/images/bg_1.jpg');">
+    <div class="container">
+        <div class="row align-items-end">
+            <div class="col-lg-7">
+                <h2 class="mb-0">Classes</h2>
+                <p>Available classes in Offa Grammar School.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-6"></div>
+            <div class="col-3 text-right"><a class="btn btn-primary d-print-none" asp-controller="Result" asp-action="Index"><i class="icon-edit"></i>&nbsp;Edit Mode</a></div>
+            <div class="col-3 text-right"><button class="btn btn-primary d-print-none" onclick="Print()"><i class="icon-print"></i>&nbsp;Print</button></div>
+        </div>
+        <br />
+        <h2 class="text-center">Offa Grammar School</h2>
+        <img src="~/images/school_logo.png" style="width:20%;height:10%;margin-left:40%"/>
+        <h2 class="text-center">Academic Result</h2>
+        <table class="table table-sm table-bordered" border='0' cellpadding='0' cellspacing='0' align='center' style="width:50%; margin-left:25%;">
+            <tr>
+                <td>Reg Number:</td>
+                <td>@Model.FirstOrDefault().Student.RegistrationNumber</td>
+                <td rowspan='5' valign='top'>
+                    <fieldset>
+                        <img src='https://s3.us-east-2.amazonaws.com/uilugportal/1452HA140.jpg' height='100' width='150' />
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td>@Model.FirstOrDefault().Student.FullName</td>
+            </tr>
+            <tr>
+                <td>Class:</td>
+                <td>@Model.FirstOrDefault().Class.Name</td>
+            </tr>
+            <tr>
+                <td>Sex:</td>
+                <td>@Model.FirstOrDefault().Student.Sex</td>
+            </tr>
+            <tr>
+                <td>Year of Entry:</td>
+                <td>@Model.FirstOrDefault().Student.YearOfEntry</td>
+            </tr>
+        </table>
+        <table class="table table-sm table-bordered" border='0' cellpadding='0' cellspacing='0' align='center' style="width:90%; margin-left:5%;">
+            <thead class="text-center text-black bg-transparent">
+                <tr>
+                    <th colspan="5">@Model.FirstOrDefault().SessionTerm.Term.Name, @Model.FirstOrDefault().SessionTerm.Session.Name</th>
+                </tr>
+                <tr>
+                    <th>Subject</th>
+                    <th>Test Score</th>
+                    <th>Exam Score</th>
+                    <th>Grade</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            @{ var totalScore = 0.0; var count = 0;}
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    totalScore += item.Total;
+                    count++;
+                    <tr>
+                        <td>@item.Subject.Name</td>
+                        <td>@item.TestScore</td>
+                        <td>@item.ExamScore</td>
+                        <td>@item.Grade</td>
+                        <td>@item.Total</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td colspan="2" class="font-weight-bold">Total: </td>
+                    <td colspan="1" class="font-weight-bold">@totalScore</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    @{ var average = ((int)totalScore / count);}
+                    <td></td>
+                    <td colspan="2" class="font-weight-bold">Average: </td>
+                    <td colspan="1" class="font-weight-bold">@average%</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+    $(document).ready(function () {
+       
+
+        var info = "@TempData["ClassSaved"]?.ToString()";
+
+        if (info == "@Constant.Saved" || info == "@Constant.Updated") {
+            toastr.success("Class " + info + " Successfully");
+        }
+
+    });
+
+    function Print() {
+        window.print();
+    }
+    </script>
+}

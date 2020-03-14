@@ -1,0 +1,145 @@
+﻿@model StudentEvaluationSystem.Models.ViewModels.StudentViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    ViewData["Heading"] = "Student";
+}
+
+<div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('/images/bg_1.jpg');">
+    <div class="container">
+        <div class="row align-items-end">
+            <div class="col-lg-7">
+                <h2 class="mb-0">@Model.Student.FullName</h2>
+                <p>Current Class - @Model.Student.CurrentClass.Name</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row p-4 mb-4" style="border-radius:10px;box-shadow:10px 10px 10px 10px #ccc;width:90%;margin-left:5%;margin-top:5%;">
+    <div class="col-12">
+        <form method="post">
+            <h4>Edit Info</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-4">
+                    <label asp-for="Student.FirstName"></label>
+                    <input asp-for="Student.FirstName" class="form-control" />
+                    <input asp-for="Student.Id" class="form-control" hidden />
+                    <span asp-validation-for="Student.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <label asp-for="Student.LastName"></label>
+                    <input asp-for="Student.LastName" class="form-control" />
+                    <span asp-validation-for="Student.LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <label asp-for="Student.Sex"></label>
+                    <select asp-for="Student.Sex" class="form-control">
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                    <span asp-validation-for="Student.Sex" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-4">
+                    <label asp-for="Student.DateOfBirth"></label>
+                    <input type="text" asp-for="Student.DateOfBirth" class="form-control" id="datePicker" />
+                    <span asp-validation-for="Student.DateOfBirth" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <label asp-for="Student.PermanentAddress"></label>
+                    <input asp-for="Student.PermanentAddress" class="form-control" />
+                    <span asp-validation-for="Student.PermanentAddress" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <label asp-for="Student.PhoneNumber"></label>
+                    <input asp-for="Student.PhoneNumber" class="form-control" />
+                    <span asp-validation-for="Student.PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-4">
+                    <label asp-for="Student.ClassOfEntryId"></label>
+                    @Html.DropDownListFor(s => s.Student.ClassOfEntryId, Model.AvailableClasses, "--Select a Class--", new { @class = "form-control" })
+                    <span asp-validation-for="Student.ClassOfEntryId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <label asp-for="Student.CurrentClassId"></label>
+                    @Html.DropDownListFor(s => s.Student.CurrentClassId, Model.AvailableClasses, "--Select a Class--", new { @class = "form-control" })
+                    <span asp-validation-for="Student.CurrentClassId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <label asp-for="Student.StateOfOrigin"></label>
+                    <select asp-for="Student.StateOfOrigin" class="form-control">
+                        <option>Abuja FCT</option>
+                        <option>Abia State</option>
+                        <option>Adamawa State</option>
+                        <option>Akwa Ibom State</option>
+                        <option>Anambra State</option>
+                        <option>Bauchi State</option>
+                        <option>Bayelsa State</option>
+                        <option>Benue State</option>
+                        <option>Borno State</option>
+                        <option>Cross River State</option>
+                        <option>Delta State</option>
+                        <option>Ebonyi State</option>
+                        <option>Edo State</option>
+                        <option>Ekiti State</option>
+                        <option>Enugu State</option>
+                        <option>Gombe State</option>
+                        <option>Imo State</option>
+                        <option>Jigawa State</option>
+                        <option>Kaduna State</option>
+                        <option>Kano State</option>
+                        <option>Katsina State</option>
+                        <option>Kebbi State</option>
+                        <option>Kogi State</option>
+                        <option>Kwara State</option>
+                        <option>Lagos State</option>
+                        <option>Nassarawa State</option>
+                        <option>Niger State</option>
+                        <option>Ogun State</option>
+                        <option>Ondo State</option>
+                        <option>Osun State</option>
+                        <option>Oyo State</option>
+                        <option>Plateau State</option>
+                        <option>Rivers State</option>
+                        <option>Sokoto State</option>
+                        <option>Taraba State</option>
+                        <option>Yobe State</option>
+                        <option>Zamfara State</option>
+                    </select>
+                    <span asp-validation-for="Student.StateOfOrigin" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-4">
+                    <label asp-for="Student.NameOfGuardianOrParent"></label>
+                    <input asp-for="Student.NameOfGuardianOrParent" class="form-control" />
+                    <span asp-validation-for="Student.NameOfGuardianOrParent" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <label asp-for="Student.Religion"></label>
+                    <select asp-for="Student.Religion" class="form-control">
+                        <option>Islam</option>
+                        <option>Christianity</option>
+                        <option>Traditional</option>
+                        <option>Others</option>
+                    </select>
+                    <span asp-validation-for="Student.Religion" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary" asp-area="Admin" asp-controller="Students" asp-action="Edit" asp-route-id="@Model.Student.Id"><i class="icon-update"></i>&nbsp;Update</button>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
