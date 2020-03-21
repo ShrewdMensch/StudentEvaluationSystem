@@ -61,5 +61,8 @@ namespace StudentEvaluationSystem.Models.Utility
 
         [Display(Name = "Is Admin?")]
         public bool IsAdmin { get; set; }
+        
+        [Display(Name = "Passport Photo")]
+        public string Photo { get; set; }
     }
 }

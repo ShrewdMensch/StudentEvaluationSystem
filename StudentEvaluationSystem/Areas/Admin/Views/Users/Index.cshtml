@@ -1,0 +1,99 @@
+﻿@using StudentEvaluationSystem.Utility
+@model List<ApplicationUser>
+
+@{
+    ViewData["Title"] = "Index";
+    ViewData["Heading"] = "Users";
+}
+
+<div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('/images/bg_1.jpg');">
+    <div class="container">
+        <div class="row align-items-end">
+            <div class="col-lg-7">
+                <h2 class="mb-0">Users</h2>
+                <p>Available users in Offa Grammar School.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-6"></div>
+            <div class="col-6 text-right"><a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register"><i class="icon-user-plus"></i>&nbsp;New Account</a></div>
+        </div>
+        <br />
+        <table class="table table-sm table-striped">
+            <thead class="text-justify" style="background-color:#007bff;color:#fff;">
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.FirstOrDefault().UserName)</th>
+                    <th>Locked?</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.UserName</td>
+                        <td>
+                            @if (item.LockoutEnd > DateTime.Now)
+                            {
+                                <i class="icon-lock"></i>
+                            }
+
+                            else
+                            {
+                                <i class="icon-unlock"></i>
+                            }
+                        </td>
+                        <td>
+                            <div class="btn-group" style="float:right;width:40%">
+                                @if (item.LockoutEnd > DateTime.Now)
+                                {
+                                    <a class="btn btn-success" asp-action="UnLock" asp-route-id="@item.Id" style="width:50%;"
+                                       data-toggle="tooltip" data-placement="right" title="Unlock User">
+                                <i class="icon-unlock" style="font-size:20px;color:#fff;"></i>
+                                    </a>
+                                }
+
+                                else
+                                {
+                                    <a type="button" class="btn btn-success" asp-action="Lock" asp-route-id="@item.Id"  style="width:50%;"
+                                        data-toggle="tooltip" data-placement="right" title="Lock User">
+                                <i class="icon-lock" style="font-size:20px;color:#fff;"></i>
+                                    </a>
+                                }
+                                @*<a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id" style="font-size:20px;"
+                                    data-toggle="tooltip" data-placement="right" title="Edit User">
+                                    <i class="icon-more" style="font-size:20px;"></i>
+                                </a>*@
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+    $(document).ready(function () {
+        $(".table").DataTable({
+            "aLengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]]
+  });
+
+        var info = "@TempData["ClassSaved"]?.ToString()";
+
+        if (info == "@Constant.Saved" || info == "@Constant.Updated") {
+            toastr.success("Class " + info + " Successfully");
+        }
+
+    });
+    </script>
+}

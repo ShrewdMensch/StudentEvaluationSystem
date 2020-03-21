@@ -21,6 +21,9 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
         {
             _dataBaseQueries = new DataBaseQueries(context);
         }
+
+
+        [Authorize(Roles = Constant.AdminAndRegularUser)]
         public IActionResult Index()
         {
             IEnumerable<Subject> subjects = new List<Subject>();

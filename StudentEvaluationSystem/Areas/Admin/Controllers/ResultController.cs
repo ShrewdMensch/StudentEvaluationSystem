@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentEvaluationSystem.Data;
 using StudentEvaluationSystem.Extension;
 using StudentEvaluationSystem.Models;
 using StudentEvaluationSystem.Utility;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace StudentEvaluationSystem.Areas.Admin.Controllers
@@ -23,6 +26,7 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
 
 
         [SessionTimeOut]
+        [Authorize(Roles = Constant.AdminUser)]
         public IActionResult Index()
         {
             var StudentId = HttpContext.Session.Get<int>("Student_Fk_Existing");
@@ -34,6 +38,8 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             return View(results);
         }
 
+
+        [Authorize(Roles = Constant.AdminUser)]
         public IActionResult Edit(int id)
         {
             var result = (from r in _context.Results
@@ -68,6 +74,17 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             }
 
             return View(result);
+        }
+
+
+        [Authorize(Roles = Constant.StudentUser)]
+        public IActionResult MyResult()
+        {
+            var studentId = _dataBaseQueries.GetStudentByUserId(
+                 HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)
+                 .Value)?.Id;
+
+            return RedirectToAction("Session_Term", "ExistingResult", new { id = studentId });
         }
     }
 }

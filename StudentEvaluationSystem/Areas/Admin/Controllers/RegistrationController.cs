@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using StudentEvaluationSystem.Utility;
 using StudentEvaluationSystem.Data;
 using StudentEvaluationSystem.Models;
 using StudentEvaluationSystem.Models.Utility;
 using StudentEvaluationSystem.Models.ViewModels;
-using StudentEvaluationSystem.Utility;
 
 namespace StudentEvaluationSystem.Areas.Admin.Controllers
 {
@@ -26,13 +24,15 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _context;
         private readonly DataBaseQueries _dataBaseQueries;
+        private readonly HostingEnvironment _hostingEnvironment;
 
         public RegistrationController(UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             ILogger<ApplicationUser> logger,
             IEmailSender emailSender,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            HostingEnvironment hostingEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -41,6 +41,7 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             _emailSender = emailSender;
             _context = context;
             _dataBaseQueries = new DataBaseQueries(context);
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IActionResult Index()
@@ -57,7 +58,7 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             var registrationViewModel = new StudentRegistrationViewModel
             {
                 AvailableClasses = _dataBaseQueries.GetAvailableClasses()
-        };
+            };
 
             return View(registrationViewModel);
         }
@@ -83,11 +84,12 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser {
+                var user = new ApplicationUser
+                {
                     UserName = registration.Email,
                     Email = registration.Email,
                     PhoneNumber = registration.PhoneNumber,
-                    
+
                 };
 
                 var result = await _userManager.CreateAsync(user, registration.Password);
@@ -114,56 +116,44 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Student(StudentRegistrationViewModel registrationViewModel)
         {
-                var user = new ApplicationUser
-                {
-                    UserName = registrationViewModel.StudentRegistration.Email,
-                    Email = registrationViewModel.StudentRegistration.Email,
-                    PhoneNumber = registrationViewModel.StudentRegistration.PhoneNumber,
+            var user = new ApplicationUser
+            {
+                UserName = registrationViewModel.StudentRegistration.Email,
+                Email = registrationViewModel.StudentRegistration.Email,
+                PhoneNumber = registrationViewModel.StudentRegistration.PhoneNumber,
 
-                };
+            };
 
-                var result = await _userManager.CreateAsync(user, 
-                    registrationViewModel.StudentRegistration.Password);
+            var result = await _userManager.CreateAsync(user,
+                registrationViewModel.StudentRegistration.Password);
 
-                if (result.Succeeded)
-                {
-                    await SaveStudentToDataBaseAsync(user, registrationViewModel.StudentRegistration);
+            if (result.Succeeded)
+            {
+                await AssignRoleToStudentAsync(user);
+                await SaveStudentToDataBaseAsync(user, registrationViewModel.StudentRegistration);
 
-                    TempData["StudentSaved"] = Constant.Saved;
+                TempData["StudentSaved"] = Constant.Saved;
 
-                    return RedirectToAction("Index", "Students");
-                }
+                return RedirectToAction("Index", "Students");
+            }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
 
-                
+
             return View(registrationViewModel);
         }
 
-        public async Task AssignRoleToStudentAsync(ApplicationUser user, StudentRegistration registration)
+        public async Task AssignRoleToStudentAsync(ApplicationUser user)
         {
-            if (!await _roleManager.RoleExistsAsync(Constant.AdminUser))
+            if (!await _roleManager.RoleExistsAsync(Constant.StudentUser))
             {
-                await _roleManager.CreateAsync(new IdentityRole(Constant.AdminUser));
+                await _roleManager.CreateAsync(new IdentityRole(Constant.StudentUser));
             }
 
-            if (!await _roleManager.RoleExistsAsync(Constant.RegularUser))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(Constant.RegularUser));
-            }
-
-            if (registration.IsAdmin)
-            {
-                await _userManager.AddToRoleAsync(user, Constant.AdminUser);
-            }
-
-            else
-            {
-                await _userManager.AddToRoleAsync(user, Constant.RegularUser);
-            }
+            await _userManager.AddToRoleAsync(user, Constant.StudentUser);
         }
 
         public async Task SaveStudentToDataBaseAsync(ApplicationUser user, StudentRegistration registration)
@@ -177,13 +167,17 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
                 StateOfOrigin = registration.StateOfOrigin,
                 PhoneNumber = registration.PhoneNumber,
                 Religion = registration.Religion,
-                NameOfGuardianOrParent= registration.NameOfGuardianOrParent,
+                NameOfGuardianOrParent = registration.NameOfGuardianOrParent,
                 PermanentAddress = registration.PermanentAddress,
                 YearOfEntry = DateTime.Now.Year.ToString(),
                 ClassOfEntryId = registration.ClassOfEntryId,
                 CurrentClassId = registration.ClassOfEntryId,
                 UserId = user.Id
             };
+
+            var webRootPath = _hostingEnvironment.WebRootPath;
+
+            student.Photo = ImageUploader.UploadImageToServer(student.Photo, HttpContext.Request.Form.Files, webRootPath);
 
             await _context.Students.AddAsync(student);
 

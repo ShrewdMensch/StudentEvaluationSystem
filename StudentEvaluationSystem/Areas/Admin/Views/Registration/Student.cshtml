@@ -23,10 +23,25 @@
     <script>
         $(function () {
             $("#datePicker").datepicker({
-                minDate: "+1", maxDate:"+3M"
+                "minDate": "+1", "maxDate":"+3M"
             });
 
         });
+
+        
+        $(document).ready(function () {
+            function ValidatePhoto() {
+            if (document.getElementById("#photo").files.length==0) {
+                toastr.error("Passport Photo Required");
+                return false;
+            }
+
+            return true;
+                
+        }
+
+        });
+
     </script>
 }
 

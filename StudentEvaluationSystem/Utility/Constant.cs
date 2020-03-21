@@ -9,6 +9,8 @@ namespace StudentEvaluationSystem.Utility
     {
         public const string AdminUser = "Admin";
         public const string RegularUser = "Regular";
+        public const string StudentUser = "Student";
+        public const string AdminAndRegularUser = "Admin,Regular";
 
         public const string JuniorClass = "Junior";
         public const string SeniorClass = "Senior";

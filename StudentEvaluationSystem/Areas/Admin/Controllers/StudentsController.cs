@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using StudentEvaluationSystem.Data;
-using StudentEvaluationSystem.Models.ViewModels;
 using StudentEvaluationSystem.Utility;
+using StudentEvaluationSystem.Data;
+using StudentEvaluationSystem.Models.Utility;
+using StudentEvaluationSystem.Models.ViewModels;
 
 namespace StudentEvaluationSystem.Areas.Admin.Controllers
 {
@@ -15,10 +14,12 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly HostingEnvironment _hostingEnvironment;
 
-        public StudentsController(ApplicationDbContext context)
+        public StudentsController(ApplicationDbContext context, HostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public async Task<IActionResult> Index()
@@ -44,10 +45,10 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
                 var studentViewModel = new StudentViewModel
                 {
                     Student = student,
-                    AvailableClasses = _context.Classes.Select(c => new SelectListItem()
+                    AvailableClasses = _context.Classes.Select(c => new ClassDropDownItem()
                     {
-                        Text = c.Name + " - " + c.Category,
-                        Value = c.Id.ToString()
+                        Name = c.Name + " - " + c.Category.Name,
+                        Id = c.Id
                     })
                 };
 
@@ -75,6 +76,10 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             studentInDB.StateOfOrigin = studentViewModel.Student.StateOfOrigin;
             studentInDB.Religion = studentViewModel.Student.Religion;
             studentInDB.NameOfGuardianOrParent = studentViewModel.Student.NameOfGuardianOrParent;
+
+            var webRootPath = _hostingEnvironment.WebRootPath;
+
+            studentInDB.Photo = ImageUploader.UploadImageToServer(studentInDB.Photo, HttpContext.Request.Form.Files, webRootPath);
 
             await _context.SaveChangesAsync();
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using StudentEvaluationSystem.Models.Utility;
 using System.Collections.Generic;
 
 namespace StudentEvaluationSystem.Models.ViewModels
@@ -7,6 +7,6 @@ namespace StudentEvaluationSystem.Models.ViewModels
     {
         public Student Student { get; set; }
 
-        public IEnumerable<SelectListItem> AvailableClasses { get; set; }
+        public IEnumerable<ClassDropDownItem> AvailableClasses { get; set; }
     }
 }

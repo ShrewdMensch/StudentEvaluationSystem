@@ -9,6 +9,10 @@ a.navbar-brand {
 
 header.site-navbar.py-4.js-sticky-header.site-navbar-target {
     background-color: #fff;
+    height: 80px!important;
+}
+div.py-2.bg-light {
+    height: 80px;
 }
 
 div.border.p-4 {
@@ -21,6 +25,7 @@ div.border.p-4 {
 .validation-summary-errors li{
     color: #faa;
 }
+
 /* Sticky footer styles
 -------------------------------------------------- */
 @media (min-width: 768px) {
@@ -28,6 +33,7 @@ div.border.p-4 {
     font-size: 16px;
   }
 }
+
 
 .border-top {
   border-top: 1px solid #e5e5e5;
@@ -96,8 +102,24 @@ a.small.mr-3{
 a#forgot-password,a#register-new {
     color: #76cc95 !important;
 }
-/*Footer Area*/
 
+/*Icons and Tootltips*/
+i.icon-lock {
+    color: red;
+    font-size: 20px;
+}
+
+.tooltip-inner {
+    color: #fff !important;
+    background-color: green !important;
+}
+i.icon-unlock {
+    color: green;
+    font-size: 20px;
+}
+
+
+/*Footer Area*/
 section {
     padding: 60px 0;
 }

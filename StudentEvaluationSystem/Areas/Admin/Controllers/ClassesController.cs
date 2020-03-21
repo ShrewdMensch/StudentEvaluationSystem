@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentEvaluationSystem.Data;
@@ -10,11 +11,12 @@ using StudentEvaluationSystem.Utility;
 namespace StudentEvaluationSystem.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class StudentResultController : Controller
+    [Authorize(Roles =Constant.AdminUser)]
+    public class ClassesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public StudentResultController(ApplicationDbContext context)
+        public ClassesController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -98,7 +100,7 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ClassTeacherEdit classTeacherEdit)
+        public async Task<IActionResult> Edit(ClassTeacherEdit classTeacherEdit)
         {
             if (ModelState.IsValid)
             {

@@ -32,10 +32,8 @@
             <tr>
                 <td>Reg Number:</td>
                 <td>@Model.RegistrationNumber</td>
-                <td rowspan='5' valign='top'>
-                    <fieldset>
-                        <img src='https://s3.us-east-2.amazonaws.com/uilugportal/1452HA140.jpg' height='100' width='150' />
-                    </fieldset>
+                <td rowspan='5' style="width:25%">
+                    <img src="@Model.Photo" style="height:30%;width:100%" />
                 </td>
             </tr>
             <tr>
@@ -61,17 +59,17 @@
             <div class="row form-group">
                 <div class="col-md-2"> <label>Session: </label></div>
                 <div class="col-md-6">
-                    <select asp-items="@(new SelectList(context.Sessions.ToList(),"Id","Name"))" class="form-control"></select>
+                    <select id="sessions" asp-items="@(new SelectList(context.Sessions.ToList(),"Id","Name"))" class="form-control"></select>
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-md-2"> <label>Term:</label></div>
                 <div class="col-md-6">
-                    <select asp-items="@(new SelectList(context.SessionTerms.ToList(),"Id","Id"))" class="form-control"></select>
+                    <select id="terms" class="form-control"></select>
                 </div>
             </div>
             <br />
-            <button type="submit" class="btn btn-success"  style="background-color:#28a745!important;color:#fff">Submit</button>
+            <button type="submit" class="btn btn-success"  style="background-color:#28a745!important;color:#fff" asp-route-id="">Submit</button>
         </form>
     </div>
 </div>
@@ -87,6 +85,29 @@
         if (info == "@Constant.Saved" || info == "@Constant.Updated") {
             toastr.success("Class " + info + " Successfully");
         }
+
+        var items = "<option value='0'>--Select--</option>";
+        $("#terms").html(items);
+
+         //Bind term dropdownlist
+        $("#sessions").change(function () {
+            var sessionId = $("#sessions").val();
+            var url = "/Admin/ExistingResult/GetSubTerms";
+
+            $.getJSON(url, { SessionId: sessionId }, function (data) {  
+                var item = "";
+                $("#terms").empty();
+                if (data != null) {
+                    item += '<option value="' + 0 + '">' + "All" + '</option>'
+                }
+
+                $.each(data, function (i, term) {
+                    item += '<option value="' + term.value + '">' + term.text + '</option>'
+                });
+                $("#terms").html(item);
+            });
+
+        });
 
     });
 

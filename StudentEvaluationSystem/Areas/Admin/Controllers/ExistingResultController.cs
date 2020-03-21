@@ -6,6 +6,7 @@ using StudentEvaluationSystem.Data;
 using StudentEvaluationSystem.Models;
 using StudentEvaluationSystem.Utility;
 using StudentEvaluationSystem.Extension;
+using Microsoft.AspNetCore.Http;
 
 namespace StudentEvaluationSystem.Areas.Admin.Controllers
 {
@@ -20,6 +21,7 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             _dataBaseQueries = new DataBaseQueries(context);
         }
 
+        [Authorize(Roles = Constant.AdminUser)]
         public IActionResult Index()
         {
             var sessionTerms = _dataBaseQueries.GetAllSessionTerms();
@@ -27,13 +29,15 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             return View(sessionTerms);
         }
 
-         public IActionResult Sessions()
+        [Authorize(Roles = Constant.AdminUser)]
+        public IActionResult Sessions()
         {
             var sessions = _dataBaseQueries.GetAllSessions();
 
             return View(sessions);
         }
 
+        [Authorize(Roles = Constant.AdminUser)]
         public IActionResult Classes(int id)
         {
             HttpContext.Session.Set<int>("SessionTerm_Fk_Existing", id);
@@ -43,6 +47,7 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             return View(classes);
         }
 
+        [Authorize(Roles = Constant.AdminUser)]
         public IActionResult All_Classes()
         {
             var classes = _dataBaseQueries.GetAllClasses();
@@ -51,6 +56,7 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
         }
 
         [SessionTimeOut]
+        [Authorize(Roles = Constant.AdminUser)]
         public IActionResult Students(int id)
         {
             HttpContext.Session.Set<int>("Class_Fk_Existing", id);
@@ -69,15 +75,17 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             return View(classes);
         }
 
-         public IActionResult AllStudents(int id)
+        [Authorize(Roles = Constant.AdminUser)]
+        public IActionResult AllStudents(int id)
         {
-            var classes = _dataBaseQueries.GetAllStudentsInClass(id);
+            var students = _dataBaseQueries.GetAllStudentsInClass(id);
 
-            return View(classes);
+            return View(students);
         }
 
 
         [SessionTimeOut]
+        [Authorize(Roles = Constant.AdminUser)]
         public IActionResult Results(int id)
         {
             HttpContext.Session.Set("Student_Fk_Existing", id);
@@ -90,7 +98,7 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             return View(results);
         }
 
-
+     
         public IActionResult StudentResult(int id)
         {
             var student = _dataBaseQueries.GetStudent(id);
@@ -98,11 +106,41 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             return View(student);
         }
 
-        public IActionResult Create()
+
+        public IActionResult Session_Term(int id)
         {
+            HttpContext.Session.Set<int>("Student_Fk_Existing", id);
             return View();
         }
 
-        
+        [HttpPost, ValidateAntiForgeryToken,
+            ActionName("Session_Term")]
+        [SessionTimeOut]
+        public IActionResult Session_TermPost(SessionTerm sessionTerm)
+        {
+
+            var studentId = HttpContext.Session.Get<int>("Student_Fk_Existing");
+
+            if (!_dataBaseQueries.DoesStudentExist(studentId))
+                return RedirectToAction("AccessDenied", "Account", new { area = "Identity" });
+
+            var results = _dataBaseQueries.GetResultsByStudentIdBySessionTermId(studentId,sessionTerm.Id);
+
+            if(sessionTerm.Id == 0)
+            {
+                var resultsGroup = _dataBaseQueries.GetResultsByStudentIdBySessionId(studentId, sessionTerm.SessionId);
+                return View("AllResults", resultsGroup);
+            }
+
+            return View("Results", results);
+        }
+
+
+
+        public JsonResult GetSubTerms(int sessionId)
+        {
+            return new JsonResult(_dataBaseQueries.GetSessionTermBySessionId(sessionId));
+        }
+
     }
 }

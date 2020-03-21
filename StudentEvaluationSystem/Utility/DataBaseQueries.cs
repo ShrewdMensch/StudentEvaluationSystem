@@ -123,10 +123,27 @@ namespace StudentEvaluationSystem.Utility
                 .Include(s=>s.Term)
                 .Single(s => s.Id == sessionTermId);
         }
+
+         public List<SelectListItem> GetSessionTermBySessionId(int sessionId)
+        {
+            var sessionTerms = _context.SessionTerms
+                .Include(c=>c.Term)
+                .Where(s => s.SessionId == sessionId)
+                .Select(c=> new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Term.Name.ToString()
+                })
+                .ToList();
+
+            return sessionTerms;
+        }
+
         public Session GetSessionBySessionTermId(int sessionTermId)
         {
             return GetSessionTerm(sessionTermId).Session;
         }
+
         public Term GetTermBySessionTermId(int sessionTermId)
         {
             return GetSessionTerm(sessionTermId).Term;
@@ -223,6 +240,11 @@ namespace StudentEvaluationSystem.Utility
             return students;
         }
 
+        public bool DoesStudentExist(int studentId)
+        {
+            return _context.Students.Any(s => s.Id == studentId);
+        }
+
         public Student GetStudent(int studentId)
         {
             var student = _context.Students
@@ -231,6 +253,15 @@ namespace StudentEvaluationSystem.Utility
                 .Single(c=>c.Id==studentId);
             return student;
         }
+
+        public Student GetStudentByUserId(string id)
+        {
+            var students = _context.Students
+                .SingleOrDefault(t => t.UserId == id);
+
+            return students;
+        }
+
 
         /*****
          *** Results Table Queries
@@ -245,13 +276,11 @@ namespace StudentEvaluationSystem.Utility
 
         public List<Result> GetResultsWithStudentByClassBySessionTerm(int studentId, int classId, int sessionTermId)
         {
-            var results =  (from student in _context.Students
-                           join result in _context.Results
-                           on student.Id equals result.StudentId
-                           where result.SessionTermId == sessionTermId &&
-                           result.ClassId == classId
-                           && result.StudentId ==studentId
-                           select result
+            var results =  (from result in _context.Results
+                            where result.SessionTermId == sessionTermId
+                            && result.StudentId == studentId
+                            && result.ClassId == classId
+                            select result
                             )
                 .Include(r => r.Student)
                 .Include(r => r.Subject)
@@ -263,6 +292,64 @@ namespace StudentEvaluationSystem.Utility
 
             return results;
         }
+
+        public List<Result> GetResultsByStudentIdBySessionTermId(int studentId,int sessionTermId)
+        {
+            var results =(from result in _context.Results
+                          where result.SessionTermId == sessionTermId 
+                          && result.StudentId == studentId
+                          select result
+                            )
+                .Include(r => r.Student)
+                .Include(r => r.Subject)
+                .Include(r => r.Class)
+                .Include(r => r.SessionTerm)
+                .Include(r => r.SessionTerm.Term)
+                .Include(r => r.SessionTerm.Session)
+                .ToList();
+
+            return results;
+        }
+        public IEnumerable<IGrouping<int,Result>> GetResultsByStudentIdBySessionId(int studentId,int sessionId)
+        {
+            //var results = (from result in _context.Results
+            //               where result.SessionTermId == sessionId
+            //               && result.StudentId == studentId
+            //               select result
+            //               )
+            //   .Include(r => r.Student)
+            //   .Include(r => r.Subject)
+            //   .Include(r => r.Class)
+            //   .Include(r => r.SessionTerm)
+            //   .Include(r => r.SessionTerm.Term)
+            //   .Include(r => r.SessionTerm.Session)
+            //   .ToList()
+            //   .GroupBy(r=>r.SessionTermId);
+
+
+            //return results;
+            var results = 
+                (from result in _context.Results
+                 join term in _context.SessionTerms
+                 on result.SessionTermId equals term.Id
+                           where term.SessionId == sessionId
+                           && result.StudentId == studentId
+                           select result
+                           )
+               .Include(r => r.Student)
+               .Include(r => r.Subject)
+               .Include(r => r.Class)
+               .Include(r => r.SessionTerm)
+               .Include(r => r.SessionTerm.Term)
+               .Include(r => r.SessionTerm.Session)
+               .ToList()
+               .GroupBy(r=>r.SessionTermId);
+
+
+            return results;
+        }
+
+
 
 
     }

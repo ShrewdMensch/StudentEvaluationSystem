@@ -21,7 +21,7 @@ namespace StudentEvaluationSystem.Models
         public string FullName => LastName + ", " + FirstName;
 
         [Display(Name ="Registration Number")]
-        public string RegistrationNumber => YearOfEntry + "/OFFA/" + Id;
+        public string RegistrationNumber => YearOfEntry + "/OFFA/" + String.Format("{0:d4}",Id);
 
         [DataType(DataType.Date)]
         [Display(Name = "Date Of Birth")]

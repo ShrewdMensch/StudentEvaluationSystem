@@ -15,8 +15,8 @@
                 </div>
                 <div class="col-lg-6 d-none d-lg-block text-right">
                     <form class="form-inline small mr-3 mt-3" style="float:right;" method="post" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Public" })">
-                    <a class="small mr-3" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" style="font-size:16px!important;"><span class="icon-user mr-2"></span>Hello @User.Identity.Name!</a>
-                        <button type="submit" class="small btn btn-primary px-4 py-2 rounded-0">Logout</button>
+                        <a class="small mr-3" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" style="font-size:16px!important;"><span class="icon-user mr-2"></span>Hello @User.Identity.Name!</a>
+                        <button type="submit" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-unlock"></span>&nbsp;Logout</button>
                     </form>
                 </div>
             </div>
@@ -34,8 +34,7 @@ else
                     <a href="#" class="small mr-3"><span class="icon-envelope-o mr-2"></span> info@mydomain.com</a>
                 </div>
                 <div class="col-lg-3 text-right">
-                    <a class="small mr-3" asp-area="Identity" asp-page="/Account/Login"><span class="icon-unlock-alt"></span> Log In</a>
-                    <a asp-area="Admin" asp-controller="Registration" asp-action="TeacherStudent" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
+                    <a asp-area="Identity" asp-page="/Account/Login" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-unlock-alt"></span>&nbsp;LogIn</a>
                 </div>
             </div>
         </div>
