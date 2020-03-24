@@ -7,10 +7,12 @@ using StudentEvaluationSystem.Utility;
 using StudentEvaluationSystem.Data;
 using StudentEvaluationSystem.Models.Utility;
 using StudentEvaluationSystem.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StudentEvaluationSystem.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = Constant.AdminUser)]
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext _context;

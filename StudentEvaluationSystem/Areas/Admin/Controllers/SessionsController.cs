@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentEvaluationSystem.Data;
 using StudentEvaluationSystem.Models;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace StudentEvaluationSystem.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = Constant.AdminUser)]
     public class SessionsController : Controller
     {
         private readonly ApplicationDbContext _context;

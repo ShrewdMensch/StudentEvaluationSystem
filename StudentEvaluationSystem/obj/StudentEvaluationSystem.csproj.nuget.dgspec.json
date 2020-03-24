@@ -1,24 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\bolar\\source\\repos\\StudentEvaluationSystem\\StudentEvaluationSystem\\StudentEvaluationSystem.csproj": {}
+    "C:\\Users\\HP\\Desktop\\StudentEvaluationSystem\\StudentEvaluationSystem\\StudentEvaluationSystem.csproj": {}
   },
   "projects": {
-    "C:\\Users\\bolar\\source\\repos\\StudentEvaluationSystem\\StudentEvaluationSystem\\StudentEvaluationSystem.csproj": {
+    "C:\\Users\\HP\\Desktop\\StudentEvaluationSystem\\StudentEvaluationSystem\\StudentEvaluationSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\bolar\\source\\repos\\StudentEvaluationSystem\\StudentEvaluationSystem\\StudentEvaluationSystem.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\Desktop\\StudentEvaluationSystem\\StudentEvaluationSystem\\StudentEvaluationSystem.csproj",
         "projectName": "StudentEvaluationSystem",
-        "projectPath": "C:\\Users\\bolar\\source\\repos\\StudentEvaluationSystem\\StudentEvaluationSystem\\StudentEvaluationSystem.csproj",
-        "packagesPath": "C:\\Users\\bolar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\bolar\\source\\repos\\StudentEvaluationSystem\\StudentEvaluationSystem\\obj\\",
+        "projectPath": "C:\\Users\\HP\\Desktop\\StudentEvaluationSystem\\StudentEvaluationSystem\\StudentEvaluationSystem.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\Desktop\\StudentEvaluationSystem\\StudentEvaluationSystem\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\bolar\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.1"
@@ -73,7 +74,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -7,6 +7,7 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+
 header.site-navbar.py-4.js-sticky-header.site-navbar-target {
     background-color: #fff;
     height: 80px!important;
@@ -74,11 +75,21 @@ html {
 }
 
 @media only screen and (max-width: 800px) {
-    nav.site-navigation.position-relative.text-right {
+    nav.site-navigation.position-relative.text-right, div.py-2.bg-light {
         display: none;
     }
 
     .social-wrap {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 990px) {
+    nav.site-navigation.position-relative.text-right, div.py-2.bg-light {
+        display: none;
+    }
+
+    .social-wrap, div.row.align-items-center {
         display: block;
     }
 }

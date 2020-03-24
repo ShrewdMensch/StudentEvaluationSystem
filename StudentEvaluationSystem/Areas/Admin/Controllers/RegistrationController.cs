@@ -10,11 +10,12 @@ using StudentEvaluationSystem.Data;
 using StudentEvaluationSystem.Models;
 using StudentEvaluationSystem.Models.Utility;
 using StudentEvaluationSystem.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StudentEvaluationSystem.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = Constant.AdminUser)]
+    [Authorize(Roles = Constant.AdminUser)]
     public class RegistrationController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;

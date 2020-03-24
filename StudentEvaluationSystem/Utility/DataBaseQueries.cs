@@ -64,6 +64,19 @@ namespace StudentEvaluationSystem.Utility
             var academicClass = _context.Classes.Find(classId);
             return academicClass;
         }
+
+        public List<Class> GetTeacherClass(int teacherId)
+        {
+            var academicClasses = (from myclass in _context.Classes
+                                 join teacher in _context.ClassTeachers
+                                 on myclass.Id equals teacher.ClassId
+                                 where teacher.Id == teacherId
+                                 select myclass)
+                                 .Include(c=>c.Category)
+                                 .ToList();
+
+            return academicClasses;
+        }
         public List<Class> GetAllClasses()
         {
             var academicClass = _context.Classes
@@ -312,22 +325,6 @@ namespace StudentEvaluationSystem.Utility
         }
         public IEnumerable<IGrouping<int,Result>> GetResultsByStudentIdBySessionId(int studentId,int sessionId)
         {
-            //var results = (from result in _context.Results
-            //               where result.SessionTermId == sessionId
-            //               && result.StudentId == studentId
-            //               select result
-            //               )
-            //   .Include(r => r.Student)
-            //   .Include(r => r.Subject)
-            //   .Include(r => r.Class)
-            //   .Include(r => r.SessionTerm)
-            //   .Include(r => r.SessionTerm.Term)
-            //   .Include(r => r.SessionTerm.Session)
-            //   .ToList()
-            //   .GroupBy(r=>r.SessionTermId);
-
-
-            //return results;
             var results = 
                 (from result in _context.Results
                  join term in _context.SessionTerms

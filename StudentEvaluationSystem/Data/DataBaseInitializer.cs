@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using StudentEvaluationSystem.Models;
 using StudentEvaluationSystem.Utility;
-using System;
 using System.Linq;
 
 namespace StudentEvaluationSystem.Data
@@ -31,11 +30,12 @@ namespace StudentEvaluationSystem.Data
             if (_context.Roles.Any(r => r.Name == Constant.AdminUser)) return;
 
             await _roleManager.CreateAsync(new IdentityRole(Constant.AdminUser));
+
             await _userManager.CreateAsync(new ApplicationUser
             {
                 UserName = "admin@gmail.com",
                 Email = "admin@gmail.com",
-                EmailConfirmed = true
+                EmailConfirmed = true,
             },"Admin123*");
 
             await _userManager.AddToRoleAsync(await _userManager.FindByEmailAsync("admin@gmail.com"), Constant.AdminUser);

@@ -22,7 +22,9 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var classes = await _context.Classes.ToListAsync();
+            var classes = await _context.Classes
+                .Include(c=>c.Category)
+                .ToListAsync();
 
             return View(classes);
         }

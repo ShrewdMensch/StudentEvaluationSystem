@@ -121,6 +121,8 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
 
             var studentId = HttpContext.Session.Get<int>("Student_Fk_Existing");
 
+            HttpContext.Session.Set<int>("Session_Fk_Existing", sessionTerm.SessionId);
+
             if (!_dataBaseQueries.DoesStudentExist(studentId))
                 return RedirectToAction("AccessDenied", "Account", new { area = "Identity" });
 

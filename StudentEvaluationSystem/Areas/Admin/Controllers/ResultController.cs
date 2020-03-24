@@ -76,6 +76,58 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             return View(result);
         }
 
+        [Authorize(Roles = Constant.AdminUser)]
+        public IActionResult EditSessional(int id)
+        {
+            var result = (from r in _context.Results
+                          where r.Id == id
+                          select r)
+                .Include(r => r.Class)
+                .Include(r => r.Student)
+                .Include(r => r.Subject)
+                .Include(r => r.SessionTerm)
+                .Include(r => r.SessionTerm.Session)
+                .Include(r => r.SessionTerm.Term)
+                .Single();
+
+            if (result == null)
+                return NotFound();
+
+            return View(result);
+        }
+
+        [HttpPost,AutoValidateAntiforgeryToken]
+        public IActionResult EditSessional(int id, Result result)
+        {
+            if (ModelState.IsValid)
+            {
+                var resultInDb = _context.Results.Find(id);
+
+                resultInDb.TestScore = result.TestScore;
+                resultInDb.ExamScore = result.ExamScore;
+
+                _context.SaveChanges();
+
+                return RedirectToAction("Sessional");
+            }
+
+            return View(result);
+        }
+
+        [SessionTimeOut]
+        public IActionResult Sessional()
+        {
+            var studentId = HttpContext.Session.Get<int>("Student_Fk_Existing");
+            var academicSessionId = HttpContext.Session.Get<int>("Session_Fk_Existing");
+
+            if (!_dataBaseQueries.DoesStudentExist(studentId))
+                return RedirectToAction("AccessDenied", "Account", new { area = "Identity" });
+
+                var resultsGroup = _dataBaseQueries.GetResultsByStudentIdBySessionId(studentId, academicSessionId);
+
+                return View(resultsGroup);
+        }
+
 
         [Authorize(Roles = Constant.StudentUser)]
         public IActionResult MyResult()
