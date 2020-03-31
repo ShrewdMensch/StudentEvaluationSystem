@@ -180,7 +180,8 @@ namespace StudentEvaluationSystem.Utility
          *****/
          public List<Student> GetStudentsCurrentlyInClass(int classId)
         {
-            var students = _context.Students.Where(s => s.CurrentClassId == classId)
+            var students = _context.Students.Where(s => s.CurrentClassId == classId
+                                             && s.Graduated == false)
                                             .Include(s=>s.CurrentClass)
                                             .Include(s=>s.ClassOfEntry)
                                             .ToList();
@@ -188,9 +189,18 @@ namespace StudentEvaluationSystem.Utility
             return students;
         }
 
-        public List<Student> GetAllStudents()
+        public List<Student> GetAllCurrentStudents()
         {
-            var students = _context.Students
+            var students = _context.Students.Where(s=>s.Graduated == false)
+                                            .Include(s=>s.CurrentClass)
+                                            .Include(s=>s.ClassOfEntry)
+                                            .ToList();
+
+            return students;
+        }
+        public List<Student> GetAllGraduatedStudents()
+        {
+            var students = _context.Students.Where(s=>s.Graduated == true)
                                             .Include(s=>s.CurrentClass)
                                             .Include(s=>s.ClassOfEntry)
                                             .ToList();
@@ -201,7 +211,20 @@ namespace StudentEvaluationSystem.Utility
         public List<Student> GetAllStudentsInClass(int classId)
         {
             var students = _context.Students
-                                            .Where(s=>s.CurrentClassId == classId)
+                                            .Where(s=>s.CurrentClassId == classId
+                                            && s.Graduated == false)
+                                            .Include(s=>s.CurrentClass)
+                                            .Include(s=>s.ClassOfEntry)
+                                            .ToList();
+
+            return students;
+        }
+        public List<Student> GetAllNonPromotedStudentsInClass(int classId)
+        {
+            var students = _context.Students
+                                            .Where(s=>s.CurrentClassId == classId
+                                            && s.Promoted == false
+                                            && s.Graduated == false)
                                             .Include(s=>s.CurrentClass)
                                             .Include(s=>s.ClassOfEntry)
                                             .ToList();
@@ -211,14 +234,12 @@ namespace StudentEvaluationSystem.Utility
 
          public List<Student> GetStudentsWithResultByClassBySessionTerm(int classId, int sessionTermId)
         {
-            var students =(from student in _context.Students
+            var students =(from student in GetAllCurrentStudents()
                            join result in _context.Results
                            on student.Id equals result.StudentId
                            where result.SessionTermId == sessionTermId 
                            && result.ClassId == classId
                            select student)
-                           .Include(s=>s.CurrentClass)
-                           .Include(s=>s.ClassOfEntry)
                            .Distinct()
                            .ToList();
 
@@ -241,7 +262,7 @@ namespace StudentEvaluationSystem.Utility
          public List<Student> GetStudentsWithSubjectResultUploadedForSessionTerm
             (int subjectId, int sessionTermId)
         {
-            var students = (from student in _context.Students
+            var students = (from student in GetAllCurrentStudents()
                             join result in _context.Results
                             on student.Id equals result.StudentId
                             where result.SessionTermId == sessionTermId && 
@@ -301,6 +322,18 @@ namespace StudentEvaluationSystem.Utility
                 .Include(r => r.SessionTerm)
                 .Include(r => r.SessionTerm.Term)
                 .Include(r => r.SessionTerm.Session)
+                .ToList();
+
+            return results;
+        }
+        public List<Result> GetStudentResultsByClassBySessionTerm(int studentId, int classId, int sessionTermId)
+        {
+            var results =  (from result in _context.Results
+                            where result.SessionTermId == sessionTermId
+                            && result.StudentId == studentId
+                            && result.ClassId == classId
+                            select result
+                            )
                 .ToList();
 
             return results;

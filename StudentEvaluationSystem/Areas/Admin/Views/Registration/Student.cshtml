@@ -28,19 +28,35 @@
 
         });
 
-        
-        $(document).ready(function () {
-            function ValidatePhoto() {
-            if (document.getElementById("#photo").files.length==0) {
+        function ValidatePhoto() {
+            var photo = document.getElementById("photo");
+            var photoExt = photo.value.substring(photo.value.lastIndexOf('.') + 1, photo.value.length);
+
+            if (photo.files.length == 0) {
                 toastr.error("Passport Photo Required");
+
+                return false;
+                photo.style.border = "2px solid red";
+            }
+
+            else if (photoExt.toLowerCase() != "jpeg" && photoExt.toLowerCase()
+                != "png" && photoExt.toLowerCase() != "jpg") {
+
+                toastr.error("Invalid Image Selected");
+
+                photo.style.border = "2px solid red";
+
                 return false;
             }
 
-            return true;
-                
-        }
 
-        });
+
+            photo.style.border = "1px solid #ced4da";
+
+
+            return true;
+
+        }
 
     </script>
 }

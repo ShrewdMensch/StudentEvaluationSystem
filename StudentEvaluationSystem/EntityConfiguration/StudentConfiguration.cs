@@ -18,6 +18,9 @@ namespace StudentEvaluationSystem.EntityConfiguration
 
             builder.Property(s => s.Promoted)
                 .HasDefaultValue(false);
+            
+            builder.Property(s => s.Promoted)
+                .HasDefaultValue(false);
 
         }
     }

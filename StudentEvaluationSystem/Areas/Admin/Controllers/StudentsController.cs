@@ -8,6 +8,8 @@ using StudentEvaluationSystem.Data;
 using StudentEvaluationSystem.Models.Utility;
 using StudentEvaluationSystem.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using StudentEvaluationSystem.Models;
+using StudentEvaluationSystem.Extension;
 
 namespace StudentEvaluationSystem.Areas.Admin.Controllers
 {
@@ -16,20 +18,26 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly DataBaseQueries _dataBaseQueries;
         private readonly HostingEnvironment _hostingEnvironment;
 
         public StudentsController(ApplicationDbContext context, HostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _dataBaseQueries = new DataBaseQueries(_context);
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
         {
-            var students = await _context.Students
-                .Include(s=>s.ClassOfEntry)
-                .Include(s=>s.CurrentClass)
-                .ToListAsync();
+            var students = _dataBaseQueries.GetAllCurrentStudents();
+
+            return View(students);
+        }
+        
+        public  IActionResult FormerStudents()
+        {
+            var students = _dataBaseQueries.GetAllGraduatedStudents();
 
             return View(students);
         }
@@ -91,5 +99,41 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult ViewResult(int studentId)
+        {
+            return RedirectToAction("Session_Term", new { id = studentId });
+        }
+
+        public IActionResult Session_Term(int id)
+        {
+            HttpContext.Session.Set<int>("Student_Fk", id);
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken,
+            ActionName("Session_Term")]
+        [SessionTimeOut]
+        public IActionResult Session_TermPost(SessionTerm sessionTerm)
+        {
+
+            var studentId = HttpContext.Session.Get<int>("Student_Fk");
+
+            HttpContext.Session.Set<int>("Session_Fk", sessionTerm.SessionId);
+
+            if (!_dataBaseQueries.DoesStudentExist(studentId))
+                return RedirectToAction("AccessDenied", "Account", new { area = "Identity" });
+
+            var results = _dataBaseQueries.GetResultsByStudentIdBySessionTermId(studentId, sessionTerm.Id);
+
+            if (sessionTerm.Id == 0)
+            {
+                var resultsGroup = _dataBaseQueries.GetResultsByStudentIdBySessionId(studentId, sessionTerm.SessionId);
+                return View("AllResults", resultsGroup);
+            }
+
+            return View("Results", results);
+        }
+
     }
 }

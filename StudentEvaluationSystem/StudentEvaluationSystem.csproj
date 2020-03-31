@@ -15,6 +15,8 @@
     <Compile Remove="Migrations\20200229113843_First_DB_Migration.Designer.cs" />
     <Compile Remove="Migrations\20200309104958_Second-DB-Migration.cs" />
     <Compile Remove="Migrations\20200309104958_Second-DB-Migration.Designer.cs" />
+    <Compile Remove="Migrations\20200324143718_Add Promoted To Students Table.cs" />
+    <Compile Remove="Migrations\20200324143718_Add Promoted To Students Table.Designer.cs" />
   </ItemGroup>
 
 
@@ -30,6 +32,15 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Admin\Views\Result\EditSessional.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Admin\Views\Students\AllResults.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Admin\Views\Students\Results.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Admin\Views\Students\Session_Term.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Admin\Views\Users\Edit.cshtml">

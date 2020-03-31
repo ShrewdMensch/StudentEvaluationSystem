@@ -1,6 +1,9 @@
 ﻿@model int
 <td>
     <div class="btn-group" style="float:right;">
-        <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model" style="font-size:20px;"><i class="icon-more" style="font-size:20px;"></i></a>
+        @{var link = Url.Action("Edit") + "/" + Model;}
+        <a class="btn btn-success" id="newTabForbidden" data-href="@link" style="font-size:20px;cursor:pointer">
+        <i class="icon-more" style="font-size:20px;color:#fff"></i>
+        </a>
     </div>
 </td>

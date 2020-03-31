@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentEvaluationSystem.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,6 +36,22 @@ namespace StudentEvaluationSystem.Utility
 
             else
                 return "F9";
+        }
+
+        public static bool DoStudentMeetPassCriteria(List<Result> studentResults)
+        {
+            int passedSubjectCount = 0;
+
+            foreach(var result in studentResults)
+            {
+                if (result.Total >= Constant.PassMark)
+                    passedSubjectCount++;
+            }
+
+            if (passedSubjectCount >= Constant.NumberOfSubjectsToPass)
+                return true;
+
+            return false;
         }
     }
 }

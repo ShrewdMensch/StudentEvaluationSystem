@@ -54,6 +54,7 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await ResetPreviousSessions();
+                await ResetStudentPromotions();
                 session.IsCurrent = true;
                 await _context.Sessions.AddAsync(session);
                 await _context.SaveChangesAsync();
@@ -178,6 +179,23 @@ namespace StudentEvaluationSystem.Areas.Admin.Controllers
                 foreach (var session in sessions)
                 {
                     session.IsCurrent = false;
+                }
+
+               await  _context.SaveChangesAsync();
+            }
+
+        }
+        private async Task ResetStudentPromotions()
+        {
+            if (_context.Students.Any())
+            {
+                var students = await _context.Students
+                    .Where(s=>s.Graduated == false)
+                    .ToListAsync();
+
+                foreach (var student in students)
+                {
+                    student.Promoted = false;
                 }
 
                await  _context.SaveChangesAsync();

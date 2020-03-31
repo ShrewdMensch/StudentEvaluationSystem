@@ -69,7 +69,7 @@
                         <nav class="site-navigation position-relative text-right" role="navigation">
                             <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-block">
                                 <li class="active">
-                                    <a class="nav-link text-right" asp-area="Public" asp-controller="Home" asp-action="Index">Home</a>
+                                    <a id="newTabForbidden" class="nav-link text-right" data-href="/" href="javascript:void(0)">Home</a>
                                 </li>
 
                                 @if (User.IsInRole(Constant.AdminUser) || User.IsInRole(Constant.RegularUser))
@@ -80,32 +80,38 @@
 
                                             <a class="nav-link text-left">User Mgt</a>
                                             <ul class="dropdown">
-                                                <li><a asp-area="Admin" asp-controller="Registration" asp-action="TeacherStudent">Register New User</a></li>
-                                                <li><a asp-area="Admin" asp-controller="Users" asp-action="Index">Manage Accounts</a></li>
-                                                <li><a asp-area="Admin" asp-controller="Teachers" asp-action="Index">Manage Teachers</a></li>
-                                                <li> <a asp-area="Admin" asp-controller="Students" asp-action="Index">Manage Students</a></li>
+                                                <li><a id="newTabForbidden" data-href="/Admin/Registration/TeacherStudent" href="javascript:void(0)">Register New User</a></li>
+                                                <li><a  id="newTabForbidden" data-href="/Admin/Users" href="javascript:void(0)">Manage Accounts</a></li>
+                                                <li><a  id="newTabForbidden" data-href="/Admin/Teachers" href="javascript:void(0)">Manage Teachers</a></li>
+                                                <li class="has-children">
+                                                    <a class="nav-link text-left">Manage Students</a>
+                                                    <ul class="dropdown">
+                                                        <li><a  id="newTabForbidden" data-href="/Admin/Students" href="javascript:void(0)">Current Students</a></li>
+                                                        <li><a  id="newTabForbidden" data-href="/Admin/Students/FormerStudents" href="javascript:void(0)">Past Students</a></li>
+                                                    </ul>
+                                                </li>
                                             </ul>
                                         </li>
                                     }
-                                        <li class="has-children">
-                                            <a class="nav-link text-left">Academics Mgt</a>
-                                            <ul class="dropdown">
-                                                <li><a asp-area="Admin" asp-controller="Promotion" asp-action="Index">Promote Students</a></li>
-                                                @if (User.IsInRole(Constant.AdminUser))
-                                                {
-                                                    <li><a asp-area="Admin" asp-controller="Classes" asp-action="Index">Manage Classes</a></li>
-                                                    <li><a asp-area="Admin" asp-controller="Subjects" asp-action="Index">Manage Subjects</a></li>
-                                                    <li class="has-children">
-                                                        <a class="nav-link text-left">Sessions/Terms</a>
-                                                        <ul class="dropdown">
-                                                            <li><a asp-area="Admin" asp-controller="Sessions" asp-action="Index">Manage Sessions</a></li>
-                                                            <li><a asp-area="Admin" asp-controller="Sessions" asp-action="Terms">Manage Terms</a></li>
-                                                        </ul>
-                                                    </li>
-                                                }
-                                            </ul>
-                                        </li>
-                                    }
+                                    <li class="has-children">
+                                        <a class="nav-link text-left">Academics Mgt</a>
+                                        <ul class="dropdown">
+                                            <li><a id="newTabForbidden" data-href="/Admin/Promotion" href="javascript:void(0)">Promote Students</a></li>
+                                            @if (User.IsInRole(Constant.AdminUser))
+                                            {
+                                                <li><a  id="newTabForbidden" data-href="/Admin/Classes" href="javascript:void(0)">Manage Classes</a></li>
+                                                <li><a  id="newTabForbidden" data-href="/Admin/Subjects" href="javascript:void(0)">Manage Subjects</a></li>
+                                                <li class="has-children">
+                                                    <a class="nav-link text-left">Sessions/Terms</a>
+                                                    <ul class="dropdown">
+                                                        <li><a  id="newTabForbidden" data-href="/Admin/Sessions" href="javascript:void(0)">Manage Sessions</a></li>
+                                                        <li><a  id="newTabForbidden" data-href="/Admin/Sessions/Terms" href="javascript:void(0)">Manage Terms</a></li>
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
 
                                 @if (User.Identity.IsAuthenticated)
                                 {
@@ -114,7 +120,7 @@
                                         <ul class="dropdown">
                                             @if (User.IsInRole(Constant.StudentUser))
                                             {
-                                                <li><a asp-area="Student" asp-controller="Result" asp-action="MyResult">My Result</a></li>
+                                                <li><a  id="newTabForbidden" data-href="/Student/Result/MyResult" href="javascript:void(0)">My Result</a></li>
                                             }
 
                                             @if (User.IsInRole(Constant.AdminUser) || User.IsInRole(Constant.RegularUser))
@@ -125,10 +131,10 @@
                                                     <ul class="dropdown">
                                                         @if (User.IsInRole(Constant.AdminUser))
                                                         {
-                                                            <li><a asp-area="Admin" asp-controller="ExistingResult" asp-action="All_Classes">All</a></li>
+                                                            <li><a  id="newTabForbidden" data-href="/Admin/ExistingResult/All_Classes" href="javascript:void(0)">All</a></li>
                                                         }
 
-                                                        <li><a asp-area="Admin" asp-controller="ExistingResult" asp-action="Index">By Terms</a></li>
+                                                        <li><a  id="newTabForbidden" data-href="/Admin/ExistingResult" href="javascript:void(0)">By Terms</a></li>
                                                     </ul>
                                                 </li>
                                             }
@@ -207,6 +213,15 @@
     <script src="~/js/jquery.mb.YTPlayer.min.js"></script>
 
     <script src="~/js/main.js"></script>
+    <script>
+        var links = document.querySelectorAll("#newTabForbidden");
+
+        for (var i = 0; i < links.length; i++) {
+            links[i].onclick = function () {
+                window.location = this.getAttribute("data-href");
+            };
+        }
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>

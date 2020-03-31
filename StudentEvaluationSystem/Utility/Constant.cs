@@ -26,7 +26,16 @@ namespace StudentEvaluationSystem.Utility
         public const string Saved = "Saved";
         public const string Uploaded = "Uploaded";
 
+        public const string Promoted = "Promoted";
+        public const string NotPromoted = "Not Promoted";
+        public const string Graduated = "Graduated";
+        public const string NotGraduated = "Could Not Graduate";
+
+        public const double PassMark = 40;
+        public const double NumberOfSubjectsToPass = 6;
+
         public const int JuniorClass_FK = 1;
+        public const int JuniorFinalClassId = 4;
         public const int SeniorClass_FK = 5;
     }
 }

@@ -72,6 +72,8 @@ namespace StudentEvaluationSystem.Models
 
         public bool? Promoted { get; set; }
 
+        public bool? Graduated { get; set; }
+
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
 
